@@ -5,6 +5,15 @@ from dotenv import load_dotenv
 import os
 import datetime
 
+def reset(dict):
+    new_dict = {}
+    count = 1
+    for val in dict.values():
+        new_dict[count] = val
+        count += 1
+
+    return new_dict
+
 def sort(dict):
     new_dict = {}
     count = 1
@@ -41,22 +50,9 @@ TODO = 1
 DOING = 2
 DONE = 3
 
-BOARDS = [["MAIN BOARD", {}, {}, {}]]
+BOARDS = [["UNTITLED BOARD", {}, {}, {}]]
 
-
-default_embed = discord.Embed(colour=0x00b0f4)
-default_embed.set_author(name="DEFAULT BOARD")
-default_embed.add_field(name="TODO",
-                value = "0",
-                inline=True)
-default_embed.add_field(name="DOING",
-                value="0",
-                inline=True)
-default_embed.add_field(name="DONE",
-                value = "0",
-                inline=True)
-
-EMBEDS = [default_embed]
+EMBEDS = [None]
 
 @bot.event
 async def on_ready():
@@ -70,7 +66,7 @@ async def on_ready():
 @bot.command()
 async def ping(ctx):
 
-    await ctx.send(embed=BOARDS[0])
+    await ctx.send("pong")
 
 @bot.tree.command(name="kanban")
 async def kanban(interaction: discord.Interaction):
@@ -89,29 +85,38 @@ async def kanban(interaction: discord.Interaction):
     await interaction.response.send_message(embed=EMBEDS[curr_board])
 
 @bot.tree.command(name="kanbanadd")
-@app_commands.describe(task = "what is your task")
+@app_commands.describe(task = "What is your task?")
 @app_commands.choices(option=[
-        app_commands.Choice(name="HIGH", value="1"),
-        app_commands.Choice(name="MEDIUM", value="2"),
-        app_commands.Choice(name="LOW", value="3")
+        app_commands.Choice(name="HIGH", value=1),
+        app_commands.Choice(name="MEDIUM", value=2),
+        app_commands.Choice(name="LOW", value=3)
     ])
-async def kanbanadd(interaction: discord.Interaction, task: str, option: app_commands.Choice[str]):
+async def kanbanadd(interaction: discord.Interaction, task: str, option: app_commands.Choice[int]):
     BOARDS[curr_board][TODO][len(BOARDS[curr_board][TODO])+1] = [task, HIGH]
     print(BOARDS[curr_board][TODO])
-    await interaction.response.send_message(f"added {task} with {option.name} priority")
+    await interaction.response.send_message(f"Added **{task}** with **{option.name}** priority.")
 
 @bot.tree.command(name="kanbanmove")
-@app_commands.describe(task = "what is your task")
-@app_commands.choices(option=[
-        app_commands.Choice(name="TO-DO", value="1"),
-        app_commands.Choice(name="DOING", value="2"),
-        app_commands.Choice(name="DONE", value="3")
+@app_commands.choices(move_from=[
+        app_commands.Choice(name="TO-DO", value=1),
+        app_commands.Choice(name="DOING", value=2),
+        app_commands.Choice(name="DONE", value=3)
     ])
-async def kanbanmove(interaction: discord.Interaction, task: int, option: app_commands.Choice[str]):
-    await interaction.response.send_message(f"moved {task} to {option.name}")
+@app_commands.describe(task_number = "Column to move task to?")
+@app_commands.choices(move_to=[
+        app_commands.Choice(name="TO-DO", value=1),
+        app_commands.Choice(name="DOING", value=2),
+        app_commands.Choice(name="DONE", value=3)
+    ])
+async def kanbanmove(interaction: discord.Interaction, move_from: app_commands.Choice[int], task_number: int, move_to: app_commands.Choice[int]):
+    BOARDS[curr_board][move_to.value][len(BOARDS[curr_board][move_to.value])+1] = BOARDS[curr_board][move_from.value][task_number]
+    del BOARDS[curr_board][move_from.value][task_number]
+    BOARDS[curr_board][move_from.value] = reset(BOARDS[curr_board][move_from.value])
+    await interaction.response.send_message(f"Moved **{move_from.name}**, task **{task_number}** to **{move_to.name}**")
 
 @bot.tree.command(name="kanbanclear")
 async def kanbanclear(interaction: discord.Interaction):
-    await interaction.response.send_message("cleared kanban board")
+    BOARDS[curr_board] = ["UNTITLED BOARD", {}, {}, {}]
+    await interaction.response.send_message("Cleared kanban board.")
 
 bot.run(TOKEN)
