@@ -45,9 +45,9 @@ def make_streak_board():
     streak_board.add_field(name="MEDITATE",
                     value = streak["meditate"],
                     inline=True)
-    streak_board.set_thumbnail(url="https://dan.onl/images/emptysong.jpg")
-    streak_board.set_footer(text="Example Footer",
-                    icon_url="https://slate.dan.onl/slate.png")
+    streak_board.set_thumbnail(url="https://cdn.discordapp.com/attachments/1236334285636505693/1236423368463618088/IMG_4296.jpg?ex=6637f47e&is=6636a2fe&hm=c40a7f52b3f3adb0ab7a9aaf7a37748aeaa2cf1b294f91c75d00fe0b748b9fe0&")
+    streak_board.set_footer(text="THIS IS THE FOOTER")
+                    # icon_url="https://slate.dan.onl/slate.png")
     
     return streak_board
 
@@ -69,6 +69,7 @@ async def ping(ctx):
 @bot.command()
 async def ching(ctx):
     await ctx.send("chong")
+
     
 @bot.tree.command(name="kanban")
 async def kanban(interaction: discord.Interaction):
@@ -110,5 +111,5 @@ async def kanbanaddstreak(interaction: discord.Interaction, option: str):
     # await interaction.response.send_message(f"Streak: {streak}")
     await interaction.response.send_message(embed=make_streak_board())
 
-
+ 
 bot.run(TOKEN)
