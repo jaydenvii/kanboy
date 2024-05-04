@@ -42,10 +42,11 @@ async def ping(ctx):
                     # value=f"1. biohw\n2. do kevin",
                     inline=True)
     embed.add_field(name="DOING",
-                    value="1. \n2. thing",
+                    value="\n".join([f"{i}. {DOING[i][0]}" for i in range(1, len(DOING) + 1)]),
                     inline=True)
     embed.add_field(name="DONE",
-                    value="1. lol\n2. hehe\n3. hohooh",
+                    value = "\n".join([f"{i}. {DONE[i][0]}" for i in range(1, len(DONE) + 1)]),
+                    # value="1. lol\n2. hehe\n3. hohooh",
                     inline=True)
 
     embed.set_thumbnail(url="https://dan.onl/images/emptysong.jpg")
