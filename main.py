@@ -83,13 +83,23 @@ async def kanban(interaction: discord.Interaction):
 
 @bot.tree.command(name="kanbanadd")
 @app_commands.describe(task = "what is your task")
-async def kanbanadd(interaction: discord.Interaction, task: str):
-    await interaction.response.send_message(f"added {task}")
+@app_commands.choices(option=[
+        app_commands.Choice(name="HIGH", value="1"),
+        app_commands.Choice(name="MEDIUM", value="2"),
+        app_commands.Choice(name="LOW", value="3")
+    ])
+async def kanbanadd(interaction: discord.Interaction, task: str, option: app_commands.Choice[str]):
+    await interaction.response.send_message(f"added {task} with {option.name} priority")
 
 @bot.tree.command(name="kanbanmove")
 @app_commands.describe(task = "what is your task")
-async def kanbanmove(interaction: discord.Interaction, task: str):
-    await interaction.response.send_message(f"moved {task}")
+@app_commands.choices(option=[
+        app_commands.Choice(name="TO-DO", value="1"),
+        app_commands.Choice(name="DOING", value="2"),
+        app_commands.Choice(name="DONE", value="3")
+    ])
+async def kanbanmove(interaction: discord.Interaction, task: str, option: app_commands.Choice[str]):
+    await interaction.response.send_message(f"moved {task} to {option.name}")
 
 @bot.tree.command(name="kanbanclear")
 async def kanbanclear(interaction: discord.Interaction):
