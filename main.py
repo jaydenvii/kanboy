@@ -4,6 +4,7 @@ from discord import app_commands
 from dotenv import load_dotenv
 import os
 import datetime
+from openai import OpenAI
 
 ### BOT STUFF
 load_dotenv()
@@ -20,9 +21,12 @@ async def on_ready():
     except Exception as e:
         print(e)
 
+### OPENAI STUFF
+OPENAI_KEY = os.getenv("OPENAI_KEY")
+
 ### KANBAN DATA
 
-# 
+# helper for listing tasks
 def reset(dict):
     new_dict = {}
     count = 1
@@ -164,5 +168,21 @@ async def kanbanaddboard(interaction: discord.Interaction, name: str):
 async def kanbanswitchboard(interaction: discord.Interaction, name: int):
     set_curr_board(name)
     await interaction.response.send_message(f"Moved to board #{name}.")
+
+### KANBOY COMMANDS
+@bot.tree.command(name="kanboy")
+async def kanboy(interaction: discord.Interaction, prompt: str):
+    client = OpenAI(api_key=OPENAI_KEY)
+
+    completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": "You are a studying assistant, knowledgeable in many different fields of math, science, arts, and engineering."},
+        {"role": "user", "content": prompt}
+    ]
+    )
+
+    response = completion.choices[0].message.content
+    await interaction.response.send_message(response)
 
 bot.run(TOKEN)
