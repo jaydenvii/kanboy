@@ -41,6 +41,10 @@ bot = commands.Bot(command_prefix=",", intents=discord.Intents.all())
 # KANBAN DATA
 curr_board = 0
 
+def set_curr_board(num):
+    global curr_board
+    curr_board = num
+
 HIGH = 1
 MEDIUM = 2
 LOW = 3
@@ -52,7 +56,7 @@ DONE = 3
 
 BOARDS = [["UNTITLED BOARD", {}, {}, {}]]
 
-EMBEDS = [None]
+EMBEDS = [None for i in range(1024)]
 
 @bot.event
 async def on_ready():
@@ -118,5 +122,34 @@ async def kanbanmove(interaction: discord.Interaction, move_from: app_commands.C
 async def kanbanclear(interaction: discord.Interaction):
     BOARDS[curr_board] = ["UNTITLED BOARD", {}, {}, {}]
     await interaction.response.send_message("Cleared kanban board.")
+
+@bot.tree.command(name="kanbanlistboards")
+async def kanbanlistboard(interaction: discord.Interaction):
+    embed = discord.Embed(colour=0x00b0f4)
+    embed.set_author(name="LIST OF BOARDS")
+    for i in range(len(BOARDS)):
+        embed.add_field(name=BOARDS[i][0],
+                    value = str(i),
+                    inline=False)
+    await interaction.response.send_message(embed=embed)
+
+@app_commands.describe(name = "New name for board?")
+@app_commands.describe(name = "Board number? Run /kanbanlistboard for board numbers.")
+@bot.tree.command(name="kanbanrenameboard")
+async def kanbanrenameboard(interaction: discord.Interaction, name: str, board_number: int):
+    BOARDS[board_number][0] = name
+    await interaction.response.send_message(f"Renamed kanban board #{board_number} titled {name}.")
+
+@app_commands.describe(name = "Name of new board?")
+@bot.tree.command(name="kanbanaddboard")
+async def kanbanaddboard(interaction: discord.Interaction, name: str):
+    BOARDS.append([name, {}, {}, {}])
+    await interaction.response.send_message(f"Added new kanban board titled {name}.")
+
+@app_commands.describe(name = "Number of board to switch to?")
+@bot.tree.command(name="kanbanswitchboard")
+async def kanbanswitchboard(interaction: discord.Interaction, name: int):
+    set_curr_board(name)
+    await interaction.response.send_message(f"Moved to board #{name}.")
 
 bot.run(TOKEN)
