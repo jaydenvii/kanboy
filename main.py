@@ -5,6 +5,24 @@ from dotenv import load_dotenv
 import os
 import datetime
 
+### BOT STUFF
+load_dotenv()
+TOKEN = os.getenv("DISCORD_TOKEN")
+
+bot = commands.Bot(command_prefix=",", intents=discord.Intents.all())
+
+@bot.event
+async def on_ready():
+    print("online")
+    try:
+        synced = await bot.tree.sync()
+        print(f"synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
+
+### KANBAN DATA
+
+# 
 def reset(dict):
     new_dict = {}
     count = 1
@@ -14,6 +32,7 @@ def reset(dict):
 
     return new_dict
 
+# sorts tasks by priority
 def sort(dict):
     new_dict = {}
     count = 1
@@ -32,18 +51,12 @@ def sort(dict):
 
     return new_dict
 
-# BOT STUFF
-load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
-
-bot = commands.Bot(command_prefix=",", intents=discord.Intents.all())
-
-# KANBAN DATA
-curr_board = 0
-
+# sets current board
 def set_curr_board(num):
     global curr_board
     curr_board = num
+
+curr_board = 0
 
 HIGH = 1
 MEDIUM = 2
@@ -58,20 +71,13 @@ BOARDS = [["UNTITLED BOARD", {}, {}, {}]]
 
 EMBEDS = [None for i in range(1024)]
 
-@bot.event
-async def on_ready():
-    print("online")
-    try:
-        synced = await bot.tree.sync()
-        print(f"synced {len(synced)} command(s)")
-    except Exception as e:
-        print(e)
-
+# testing command
 @bot.command()
 async def ping(ctx):
-
     await ctx.send("pong")
 
+### KANBAN COMMANDS
+# displays current board
 @bot.tree.command(name="kanban")
 async def kanban(interaction: discord.Interaction):
     embed = discord.Embed(colour=0x00b0f4)
@@ -88,6 +94,7 @@ async def kanban(interaction: discord.Interaction):
     EMBEDS[curr_board] = embed
     await interaction.response.send_message(embed=EMBEDS[curr_board])
 
+# adds task to current board
 @bot.tree.command(name="kanbanadd")
 @app_commands.describe(task = "What is your task?")
 @app_commands.choices(option=[
@@ -100,6 +107,7 @@ async def kanbanadd(interaction: discord.Interaction, task: str, option: app_com
     print(BOARDS[curr_board][TODO])
     await interaction.response.send_message(f"Added **{task}** with **{option.name}** priority.")
 
+# moves task on current board
 @bot.tree.command(name="kanbanmove")
 @app_commands.choices(move_from=[
         app_commands.Choice(name="TO-DO", value=1),
@@ -118,11 +126,13 @@ async def kanbanmove(interaction: discord.Interaction, move_from: app_commands.C
     BOARDS[curr_board][move_from.value] = reset(BOARDS[curr_board][move_from.value])
     await interaction.response.send_message(f"Moved **{move_from.name}**, task **{task_number}** to **{move_to.name}**")
 
+# clears "DONE" on current board
 @bot.tree.command(name="kanbanclear")
 async def kanbanclear(interaction: discord.Interaction):
     BOARDS[curr_board] = ["UNTITLED BOARD", {}, {}, {}]
     await interaction.response.send_message("Cleared kanban board.")
 
+# lists all boards
 @bot.tree.command(name="kanbanlistboards")
 async def kanbanlistboard(interaction: discord.Interaction):
     embed = discord.Embed(colour=0x00b0f4)
@@ -133,6 +143,7 @@ async def kanbanlistboard(interaction: discord.Interaction):
                     inline=False)
     await interaction.response.send_message(embed=embed)
 
+# renames board
 @app_commands.describe(name = "New name for board?")
 @app_commands.describe(name = "Board number? Run /kanbanlistboard for board numbers.")
 @bot.tree.command(name="kanbanrenameboard")
@@ -140,12 +151,14 @@ async def kanbanrenameboard(interaction: discord.Interaction, name: str, board_n
     BOARDS[board_number][0] = name
     await interaction.response.send_message(f"Renamed kanban board #{board_number} titled {name}.")
 
+# adds new board
 @app_commands.describe(name = "Name of new board?")
 @bot.tree.command(name="kanbanaddboard")
 async def kanbanaddboard(interaction: discord.Interaction, name: str):
     BOARDS.append([name, {}, {}, {}])
     await interaction.response.send_message(f"Added new kanban board titled {name}.")
 
+# switches board
 @app_commands.describe(name = "Number of board to switch to?")
 @bot.tree.command(name="kanbanswitchboard")
 async def kanbanswitchboard(interaction: discord.Interaction, name: int):
