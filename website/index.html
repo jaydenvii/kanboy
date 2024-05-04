@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>KanBot</title>
+</head>
+<body class="has-navbar-fixed-top">
+
+  <div id="nav-placeholder">
+
+  </div>
+
+  <script>
+    $(function(){
+      $("#nav-placeholder").load("components/nav.html");
+    });
+  </script>
+
+  <section class="hero is-link is-fullheight-with-navbar">
+    <div class="hero-body">
+      <div class="columns">
+        <div class="column my-auto">
+          <p class="title my-3">KanBoy: The only Discord studying bot you need.</p>
+          <p class="subtitle">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum reiciendis amet tempora distinctio sapiente repellat possimus laboriosam corporis, at labore dolores eum aperiam aliquam velit, doloremque consequuntur hic, maxime ut.</p>
+          <div class="buttons are-large">
+            <a href="https://discord.com/oauth2/authorize?client_id=1236333640024326285&permissions=2147551296&scope=bot" target="_blank">
+              <button class="button is-light is-rounded ">Invite KanBot</button>
+            </a>
+          </div>
+        </div>
+        <div class="column my-auto">
+          <figure class="image is-4by3">
+            <img src="assets/kanbot.png" />
+          </figure>
+        </div>
+      </div> 
+    </div>
+  </section>
+
+  <div id="footer-placeholder">
+
+  </div>
+
+  <script>
+      $(function(){
+        $("#footer-placeholder").load("components/footer.html");
+      });
+  </script>
+
+</body>
+</html>

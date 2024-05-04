@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="scripts/commands.js" defer="true"></script>
+    <script src="scripts/modal.js"></script>
+    <title>KanBot</title>
+</head>
+<body class="has-navbar-fixed-top">
+
+  <div id="nav-placeholder" class="mb-5"></div>
+  <script>
+    $(function(){
+      $("#nav-placeholder").load("components/nav.html");
+    });
+  </script>
+
+  <div id="commands-panel" class="mx-auto mt-5">
+    <nav class="panel m-5">
+      <p class="panel-heading">Commands</p>
+      <div class="panel-block">
+      <p class="control has-icons-left">
+        <input class="input" type="text" placeholder="Search" />
+        <span class="icon is-left">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+      </p>
+      </div>
+      <p class="panel-tabs">
+        <a onclick="loadAllCommands()" class="is-active" id="all-tab">All</a>
+        <a onclick="loadKanbanCommands()" id="kanban-tab">Kanban Board</a>
+        <a onclick="loadPomodoroCommands()" id="pomodoro-tab">Pomadoro Timer</a>
+        <a onclick="loadStreakingCommands()" id="streaking-tab">Streaking</a>
+      </p>
+      <div id="command-list-div">
+        <!-- Auto filled by JS -->
+      </div>
+    </nav>
+  </div>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    $(function(){
+      $("#footer-placeholder").load("components/footer.html");
+    });
+  </script>
+
+</body>
+</html>
