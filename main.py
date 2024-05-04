@@ -73,6 +73,15 @@ OPENAI_KEY = os.getenv("OPENAI_KEY")
 
 ### KANBAN DATA
 
+RED = 0xFF0000
+GREEN = 0x00ff00
+BLUE = 0x0000ff
+YELLOW = 0xffff00
+FUCHSIA = 0xff00ff
+AQUA = 0x00ffff
+WHITE = 0xffffff
+BLACK = 0x000000
+
 # helper for listing tasks
 def reset(dict):
     new_dict = {}
@@ -118,7 +127,7 @@ TODO = 1
 DOING = 2
 DONE = 3
 
-BOARDS = [["UNTITLED BOARD", {}, {}, {}]]
+BOARDS = [["UNTITLED BOARD", {}, {}, {}, 0x00ff00]]
 
 EMBEDS = [None for i in range(1024)]
 
@@ -131,7 +140,7 @@ async def ping(ctx):
 # displays current board
 @bot.tree.command(name="kanban")
 async def kanban(interaction: discord.Interaction):
-    embed = discord.Embed(colour=0x00b0f4)
+    embed = discord.Embed(colour=BOARDS[curr_board][4])
     embed.set_author(name=BOARDS[curr_board][NAME])
     embed.add_field(name="TODO",
                     value = "\n".join([f"{i}. {BOARDS[curr_board][TODO][i][0]}" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
@@ -148,15 +157,15 @@ async def kanban(interaction: discord.Interaction):
 # adds task to current board
 @bot.tree.command(name="kanbanadd")
 @app_commands.describe(task = "What is your task?")
-@app_commands.choices(option=[
+@app_commands.choices(priority=[
         app_commands.Choice(name="HIGH", value=1),
         app_commands.Choice(name="MEDIUM", value=2),
         app_commands.Choice(name="LOW", value=3)
     ])
-async def kanbanadd(interaction: discord.Interaction, task: str, option: app_commands.Choice[int]):
+async def kanbanadd(interaction: discord.Interaction, task: str, priority: app_commands.Choice[int]):
     BOARDS[curr_board][TODO][len(BOARDS[curr_board][TODO])+1] = [task, HIGH]
     print(BOARDS[curr_board][TODO])
-    await interaction.response.send_message(f"Added **{task}** with **{option.name}** priority.")
+    await interaction.response.send_message(f"Added **{task}** with **{priority.name}** priority.")
 
 # moves task on current board
 @bot.tree.command(name="kanbanmove")
@@ -202,11 +211,39 @@ async def kanbanrenameboard(interaction: discord.Interaction, new_name: str, boa
     BOARDS[board_number][0] = new_name
     await interaction.response.send_message(f"Renamed kanban board #{board_number} titled {new_name}.")
 
+# recolours board
+@app_commands.describe(board_number = "Board number? Run /kanbanlistboard for board numbers.")
+@app_commands.choices(colour = [
+    app_commands.Choice(name="RED", value = 0xFF0000),
+    app_commands.Choice(name="GREEN", value = 0x00ff00),
+    app_commands.Choice(name="BLUE", value = 0x0000ff),  
+    app_commands.Choice(name="YELLOW", value = 0xffff00),
+    app_commands.Choice(name="FUCHSIA", value = 0xff00ff),
+    app_commands.Choice(name="AQUA", value = 0x00ffff),
+    app_commands.Choice(name="WHITE", value = 0xffffff),
+    app_commands.Choice(name="BLACK", value = 0x000000)
+])
+@bot.tree.command(name="kanbanrecolourboard")
+async def kanbanrecolourboard(interaction: discord.Interaction, board_number: int, colour: app_commands.Choice[int]):
+    BOARDS[board_number][4] = colour.value
+    await interaction.response.send_message(f"Recoloured kanban board #{board_number} coloured {colour.name}.")
+
 # adds new board
 @app_commands.describe(name = "Name of new board?")
+@app_commands.describe(colour = "Colour of new board?")
+@app_commands.choices(colour = [
+    app_commands.Choice(name="RED", value = 0xFF0000),
+    app_commands.Choice(name="GREEN", value = 0x00ff00),
+    app_commands.Choice(name="BLUE", value = 0x0000ff),  
+    app_commands.Choice(name="YELLOW", value = 0xffff00),
+    app_commands.Choice(name="FUCHSIA", value = 0xff00ff),
+    app_commands.Choice(name="AQUA", value = 0x00ffff),
+    app_commands.Choice(name="WHITE", value = 0xffffff),
+    app_commands.Choice(name="BLACK", value = 0x000000)
+])
 @bot.tree.command(name="kanbanaddboard")
-async def kanbanaddboard(interaction: discord.Interaction, name: str):
-    BOARDS.append([name, {}, {}, {}])
+async def kanbanaddboard(interaction: discord.Interaction, name: str, colour: app_commands.Choice[int]):
+    BOARDS.append([name, {}, {}, {}, colour.value])
     await interaction.response.send_message(f"Added new kanban board titled {name}.")
 
 # switches board
@@ -227,14 +264,14 @@ async def kanbanstreak(interaction: discord.Interaction):
 
 @bot.tree.command(name="kanbanaddstreak")
 # @app_commands.describe(task = "what u wnat?!/1!?")
-@app_commands.choices(option = [
+@app_commands.choices(priority = [
     app_commands.Choice(name="study", value = "study"),
     app_commands.Choice(name="workout", value = "workout"),
     app_commands.Choice(name="practice", value = "practice"),    
     app_commands.Choice(name="meditate", value = "meditate")
 ])
-async def kanbanaddstreak(interaction: discord.Interaction, option: str):
-    add_streak(option)
+async def kanbanaddstreak(interaction: discord.Interaction, priority: str):
+    add_streak(priority)
     # await interaction.response.send_message(f"Streak: {streak}")
     await interaction.response.send_message(embed=make_streak_board())
 
