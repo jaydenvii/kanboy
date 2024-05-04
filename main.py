@@ -4,9 +4,12 @@ from discord import app_commands
 from dotenv import load_dotenv
 import os
 import json
-
-
 import datetime
+import asyncio
+
+
+
+
 from openai import OpenAI
 
 ### BOT STUFF
@@ -234,6 +237,38 @@ async def kanbanaddstreak(interaction: discord.Interaction, option: str):
     add_streak(option)
     # await interaction.response.send_message(f"Streak: {streak}")
     await interaction.response.send_message(embed=make_streak_board())
+
+# CLOCK
+@bot.tree.command(name="kanbancountdown")
+@app_commands.choices(unit = [
+    app_commands.Choice(name="minutes", value = "minutes"),
+    app_commands.Choice(name="seconds", value = "seconds")
+])
+async def kanbancountdown(interaction: discord.Interaction, time: int, unit: str):
+    
+    if unit == "minutes":
+        time *= 60
+    
+    
+    message = await interaction.response.send_message(f"Countdown: {time} seconds")
+    
+    message = await interaction.original_response()
+    
+    while time > 0:
+        await asyncio.sleep(0.7) 
+        time -= 1
+        if time > 60:
+            await message.edit(content=f"Countdown: {time//60} minutes\n{time%60} seconds")
+        await message.edit(content=f"Countdown: {time} seconds")
+        
+    await message.edit(content="Countdown finished!")
+    
+    
+
+
+
+
+
 
  
 ### KANBOY COMMANDS
