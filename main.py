@@ -187,17 +187,17 @@ async def kanbanlistboard(interaction: discord.Interaction):
     embed.set_author(name="LIST OF BOARDS")
     for i in range(len(BOARDS)):
         embed.add_field(name=BOARDS[i][0],
-                    value = str(i),
+                    value="Board Number/ID: " + str(i),
                     inline=False)
     await interaction.response.send_message(embed=embed)
 
 # renames board
-@app_commands.describe(name = "New name for board?")
-@app_commands.describe(name = "Board number? Run /kanbanlistboard for board numbers.")
+@app_commands.describe(new_name = "New name for board?")
+@app_commands.describe(board_number = "Board number? Run /kanbanlistboard for board numbers.")
 @bot.tree.command(name="kanbanrenameboard")
-async def kanbanrenameboard(interaction: discord.Interaction, name: str, board_number: int):
-    BOARDS[board_number][0] = name
-    await interaction.response.send_message(f"Renamed kanban board #{board_number} titled {name}.")
+async def kanbanrenameboard(interaction: discord.Interaction, new_name: str, board_number: int):
+    BOARDS[board_number][0] = new_name
+    await interaction.response.send_message(f"Renamed kanban board #{board_number} titled {new_name}.")
 
 # adds new board
 @app_commands.describe(name = "Name of new board?")
@@ -207,11 +207,11 @@ async def kanbanaddboard(interaction: discord.Interaction, name: str):
     await interaction.response.send_message(f"Added new kanban board titled {name}.")
 
 # switches board
-@app_commands.describe(name = "Number of board to switch to?")
+@app_commands.describe(number = "Number of board to switch to?")
 @bot.tree.command(name="kanbanswitchboard")
-async def kanbanswitchboard(interaction: discord.Interaction, name: int):
-    set_curr_board(name)
-    await interaction.response.send_message(f"Moved to board #{name}.")
+async def kanbanswitchboard(interaction: discord.Interaction, number: int):
+    set_curr_board(number)
+    await interaction.response.send_message(f"Moved to board #**{number}**, titled **{BOARDS[curr_board][0]}**")
 
 @bot.tree.command(name="kanbangetstreak")
 async def kanbanstreak(interaction: discord.Interaction):
