@@ -30,23 +30,27 @@ def add_streak(task):
 
 streak = get_streak()
 
-# embed = discord.Embed(colour=0x00b0f4)
-# embed.set_author(name="ISAAC'S BOARD")
-# embed.add_field(name="TODO",
-#                 value = "\n".join([f"{i}. {TODO[i][0]}" for i in range(1, len(TODO) + 1)]),
-#                 # value=f"1.{TODO[1][0]} \n2.{TODO[2][0]}",
-#                 # value=f"1. biohw\n2. do kevin",
-#                 inline=True)
-# embed.add_field(name="DOING",
-#                 value="\n".join([f"{i}. {DOING[i][0]}" for i in range(1, len(DOING) + 1)]),
-#                 inline=True)
-# embed.add_field(name="DONE",
-#                 value = "\n".join([f"{i}. {DONE[i][0]}" for i in range(1, len(DONE) + 1)]),
-#                 # value="1. lol\n2. hehe\n3. hohooh",
-#                 inline=True)
-# embed.set_thumbnail(url="https://dan.onl/images/emptysong.jpg")
-# embed.set_footer(text="Example Footer",
-#                 icon_url="https://slate.dan.onl/slate.png")
+def make_streak_board():
+    streak_board = discord.Embed(colour=0x00b0f4)
+    streak_board.set_author(name="BALLSACK'S STREAKS")
+    streak_board.add_field(name="STUDY",
+                    value = streak["study"],
+                    inline=True)
+    streak_board.add_field(name="WORKOUT",
+                    value = streak["workout"],
+                    inline=True)
+    streak_board.add_field(name="PRACTICE",
+                    value = streak["practice"],
+                    inline=True)
+    streak_board.add_field(name="MEDITATE",
+                    value = streak["meditate"],
+                    inline=True)
+    streak_board.set_thumbnail(url="https://dan.onl/images/emptysong.jpg")
+    streak_board.set_footer(text="Example Footer",
+                    icon_url="https://slate.dan.onl/slate.png")
+    
+    return streak_board
+
 
 
 @bot.event
@@ -86,8 +90,11 @@ async def kanbanclear(interaction: discord.Interaction):
 
 @bot.tree.command(name="kanbangetstreak")
 async def kanbanstreak(interaction: discord.Interaction):
-    streak = get_streak()
-    await interaction.response.send_message(f"Streak: {streak}")
+
+    await interaction.response.send_message(embed=make_streak_board())
+        
+    # streak = get_streak()
+    # await interaction.response.send_message(f"Streak: {streak}")
 
 
 @bot.tree.command(name="kanbanaddstreak")
@@ -100,7 +107,8 @@ async def kanbanstreak(interaction: discord.Interaction):
 ])
 async def kanbanaddstreak(interaction: discord.Interaction, option: str):
     add_streak(option)
-    await interaction.response.send_message(f"Streak: {streak}")
+    # await interaction.response.send_message(f"Streak: {streak}")
+    await interaction.response.send_message(embed=make_streak_board())
 
 
 bot.run(TOKEN)
