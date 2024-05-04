@@ -180,8 +180,21 @@ async def kanbanmove(interaction: discord.Interaction, move_from: app_commands.C
 # clears "DONE" on current board
 @bot.tree.command(name="kanbanclear")
 async def kanbanclear(interaction: discord.Interaction):
-    BOARDS[curr_board] = ["UNTITLED BOARD", {}, {}, {}]
-    await interaction.response.send_message("Cleared kanban board.")
+    BOARDS[curr_board][DONE] = {}
+    await interaction.response.send_message(f"Cleared DONE list from {BOARDS[curr_board][0]}.")
+
+@bot.tree.command(name="kanbanremove")
+@app_commands.choices(remove_from=[
+        app_commands.Choice(name="TO-DO", value=1),
+        app_commands.Choice(name="DOING", value=2),
+        app_commands.Choice(name="DONE", value=3)
+    ])
+@app_commands.describe(task_number = "Task to remove?")
+async def kanbanremove(interaction: discord.Interaction, remove_from: app_commands.Choice[int], task_number: int):
+    name = BOARDS[curr_board][remove_from.value][task_number][0]
+    del BOARDS[curr_board][remove_from.value][task_number]
+    BOARDS[curr_board][remove_from.value] = reset(BOARDS[curr_board][remove_from.value])   
+    await interaction.response.send_message(f"Removed {name} from {BOARDS[curr_board][0]}.")
 
 # lists all boards
 @bot.tree.command(name="kanbanlistboards")
