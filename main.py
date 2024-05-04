@@ -37,10 +37,11 @@ async def ping(ctx):
     embed.set_author(name="ISAAC'S BOARD")
 
     embed.add_field(name="TODO",
-                    value="",
+                    value=f"1.{TODO[1][0]} \n2.{TODO[2][0]}",
+                    # value=f"1. biohw\n2. do kevin",
                     inline=True)
     embed.add_field(name="DOING",
-                    value="1. doing\n2. thing",
+                    value="1. \n2. thing",
                     inline=True)
     embed.add_field(name="DONE",
                     value="1. lol\n2. hehe\n3. hohooh",
