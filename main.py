@@ -30,38 +30,33 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 bot = commands.Bot(command_prefix=",", intents=discord.Intents.all())
 
 # KANBAN DATA
+curr_board = 0
+
 HIGH = 1
 MEDIUM = 2
 LOW = 3
 
-TODO = {
-}
-DOING = {
-}
-DONE = {
-}
+NAME = 0
+TODO = 1
+DOING = 2
+DONE = 3
 
-BOARDS = []
+BOARDS = [["MAIN BOARD", {}, {}, {}]]
 
-embed = discord.Embed(colour=0x00b0f4)
-embed.set_author(name="ISAAC'S BOARD")
-embed.add_field(name="TODO",
-                value = "\n".join([f"{i}. {TODO[i][0]}" for i in range(1, len(TODO) + 1)]),
-                # value=f"1.{TODO[1][0]} \n2.{TODO[2][0]}",
-                # value=f"1. biohw\n2. do kevin",
-                inline=True)
-embed.add_field(name="DOING",
-                value="\n".join([f"{i}. {DOING[i][0]}" for i in range(1, len(DOING) + 1)]),
-                inline=True)
-embed.add_field(name="DONE",
-                value = "\n".join([f"{i}. {DONE[i][0]}" for i in range(1, len(DONE) + 1)]),
-                # value="1. lol\n2. hehe\n3. hohooh",
-                inline=True)
-embed.set_thumbnail(url="https://dan.onl/images/emptysong.jpg")
-embed.set_footer(text="Example Footer",
-                icon_url="https://slate.dan.onl/slate.png")
 
-BOARDS.append(embed)
+default_embed = discord.Embed(colour=0x00b0f4)
+default_embed.set_author(name="DEFAULT BOARD")
+default_embed.add_field(name="TODO",
+                value = "0",
+                inline=True)
+default_embed.add_field(name="DOING",
+                value="0",
+                inline=True)
+default_embed.add_field(name="DONE",
+                value = "0",
+                inline=True)
+
+EMBEDS = [default_embed]
 
 @bot.event
 async def on_ready():
@@ -79,7 +74,19 @@ async def ping(ctx):
 
 @bot.tree.command(name="kanban")
 async def kanban(interaction: discord.Interaction):
-    await interaction.response.send_message("this is where you see the kanban board")
+    embed = discord.Embed(colour=0x00b0f4)
+    embed.set_author(name=BOARDS[curr_board][NAME])
+    embed.add_field(name="TODO",
+                    value = "\n".join([f"{i}. {BOARDS[curr_board][TODO][i][0]}" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
+                    inline=True)
+    embed.add_field(name="DOING",
+                    value="\n".join([f"{i}. {BOARDS[curr_board][DOING][i][0]}" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
+                    inline=True)
+    embed.add_field(name="DONE",
+                    value = "\n".join([f"{i}. {BOARDS[curr_board][DONE][i][0]}" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
+                    inline=True)
+    EMBEDS[curr_board] = embed
+    await interaction.response.send_message(embed=EMBEDS[curr_board])
 
 @bot.tree.command(name="kanbanadd")
 @app_commands.describe(task = "what is your task")
@@ -89,6 +96,8 @@ async def kanban(interaction: discord.Interaction):
         app_commands.Choice(name="LOW", value="3")
     ])
 async def kanbanadd(interaction: discord.Interaction, task: str, option: app_commands.Choice[str]):
+    BOARDS[curr_board][TODO][len(BOARDS[curr_board][TODO])+1] = [task, HIGH]
+    print(BOARDS[curr_board][TODO])
     await interaction.response.send_message(f"added {task} with {option.name} priority")
 
 @bot.tree.command(name="kanbanmove")
@@ -98,7 +107,7 @@ async def kanbanadd(interaction: discord.Interaction, task: str, option: app_com
         app_commands.Choice(name="DOING", value="2"),
         app_commands.Choice(name="DONE", value="3")
     ])
-async def kanbanmove(interaction: discord.Interaction, task: str, option: app_commands.Choice[str]):
+async def kanbanmove(interaction: discord.Interaction, task: int, option: app_commands.Choice[str]):
     await interaction.response.send_message(f"moved {task} to {option.name}")
 
 @bot.tree.command(name="kanbanclear")
