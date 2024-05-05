@@ -104,18 +104,18 @@ async def ping(ctx):
 ### KANBAN COMMANDS
 # displays current board
 @bot.tree.command(name="kanban")
-async def kanban(interaction: discord.Interaction):       
-    embed = discord.Embed(title=":scroll: "+BOARDS[curr_board][NAME], colour=BOARDS[curr_board][COLOUR])
-    embed = discord.Embed(colour=BOARDS[curr_board][4]) 
-    embed.set_author(name=BOARDS[curr_board][NAME])
-    embed.add_field(name=":pushpin: TODO",
-                    value = "\n".join([f"{i}. {BOARDS[curr_board][TODO][i][0]} [{prio[BOARDS[curr_board][TODO][i][1]]}]" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
+async def kanban(interaction: discord.Interaction):
+    PRIO_MAPPING = {"HIGH": ":red_square: ", "MEDIUM": ":yellow_square: ", "LOW": ":green_square: "}
+
+    embed = discord.Embed(title=f":scroll: {BOARDS[curr_board][NAME]}", colour=BOARDS[curr_board][COLOUR])
+    embed.add_field(name=":pushpin: __TODO__",
+                    value = "\n".join([f"{PRIO_MAPPING[prio[BOARDS[curr_board][TODO][i][1]]]} {i}. {BOARDS[curr_board][TODO][i][0]}" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
                     inline=True)
-    embed.add_field(name=":person_running: DOING",
-                    value="\n".join([f"{i}. {BOARDS[curr_board][DOING][i][0]} [{prio[BOARDS[curr_board][DOING][i][1]]}]" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
+    embed.add_field(name=":person_running: __DOING__",
+                    value="\n".join([f"{PRIO_MAPPING[prio[BOARDS[curr_board][DOING][i][1]]]} {i}. {BOARDS[curr_board][DOING][i][0]}" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
                     inline=True)
-    embed.add_field(name=":white_check_mark: DONE",
-                    value = "\n".join([f"{i}. {BOARDS[curr_board][DONE][i][0]} [{prio[BOARDS[curr_board][DONE][i][1]]}]" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
+    embed.add_field(name=":white_check_mark: __DONE__",
+                    value = "\n".join([f"{PRIO_MAPPING[prio[BOARDS[curr_board][DONE][i][1]]]} {i}. {BOARDS[curr_board][DONE][i][0]}" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
                     inline=True)
     EMBEDS[curr_board] = embed
     await interaction.response.send_message(embed=EMBEDS[curr_board])
@@ -260,8 +260,6 @@ def make_streak_board():
                     value = streaks[key],
                     inline=False)
     streak_board.set_thumbnail(url="https://cdn.discordapp.com/attachments/1236334285636505693/1236423368463618088/IMG_4296.jpg?ex=6637f47e&is=6636a2fe&hm=c40a7f52b3f3adb0ab7a9aaf7a37748aeaa2cf1b294f91c75d00fe0b748b9fe0&")
-    # streak_board.set_footer(text="THIS IS THE FOOTER")
-                    # icon_url="https://slate.dan.onl/slate.png")
     
     return streak_board
 ### STREAK COMMANDS
