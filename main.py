@@ -94,45 +94,7 @@ BOARDS = [["UNTITLED BOARD", {}, {}, {}, 0x00ff00]]
 
 EMBEDS = [None for i in range(1024)]
 
-### STREAK STUFF
-def get_streak():
-    with open("streak.json", "r") as f:
-        
-        return json.load(f)
 
-def write_streak(task):
-    # js = {task: num+1}
-    streak[task] += 1
-    out = json.dumps(streak, indent = 4)
-    
-    with open("streak.json", "w") as f:
-        f.write(out)
-        
-def add_streak(task):
-    write_streak(task)
-
-streak = get_streak()
-
-def make_streak_board():
-    streak_board = discord.Embed(colour=0x00b0f4)
-    streak_board.set_author(name="KEVIN'S STREAKS")
-    streak_board.add_field(name="STUDY",
-                    value = streak["study"],
-                    inline=True)
-    streak_board.add_field(name="WORKOUT",
-                    value = streak["workout"],
-                    inline=True)
-    streak_board.add_field(name="PRACTICE",
-                    value = streak["practice"],
-                    inline=True)
-    streak_board.add_field(name="MEDITATE",
-                    value = streak["meditate"],
-                    inline=True)
-    streak_board.set_thumbnail(url="https://cdn.discordapp.com/attachments/1236334285636505693/1236423368463618088/IMG_4296.jpg?ex=6637f47e&is=6636a2fe&hm=c40a7f52b3f3adb0ab7a9aaf7a37748aeaa2cf1b294f91c75d00fe0b748b9fe0&")
-    streak_board.set_footer(text="THIS IS THE FOOTER")
-                    # icon_url="https://slate.dan.onl/slate.png")
-    
-    return streak_board
 
 # testing command
 @bot.command()
