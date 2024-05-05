@@ -264,7 +264,7 @@ streaks = get_streak()
 
 def make_streak_board():
     streak_board = discord.Embed(colour=ORANGE)
-    streak_board.set_author(name="STREAKS")
+    streak_board.set_author(name=":fire: STREAKS")
     for key in streaks.keys():
         streak_board.add_field(name=key.upper(),
                     value = streaks[key],
@@ -335,6 +335,8 @@ def clock_embed_make(time):
 ])
 
 async def pomodoro(interaction: discord.Interaction, time: int, unit: str):
+
+    total_time = time
     
     channel = interaction.user.voice.channel
     await channel.connect()
@@ -343,7 +345,7 @@ async def pomodoro(interaction: discord.Interaction, time: int, unit: str):
         time *= 60
     # await interaction.response.send_message(embed=clock_embed_make(time))
     
-    message = await interaction.response.send_message(f"Pomodoro countdown: {time} seconds")
+    message = await interaction.response.send_message(f":tomato: Pomodoro countdown: {time} seconds")
        
     message = await interaction.original_response()
     
@@ -352,12 +354,12 @@ async def pomodoro(interaction: discord.Interaction, time: int, unit: str):
         time -= 1
         if time > 60:
             
-            await message.edit(content=f"Pomodoro countdown: {time//60} minutes\n{time%60} seconds")
-        await message.edit(content=f"Pomodoro countdown: {time} seconds")
+            await message.edit(content=f":tomato: Pomodoro countdown: {time//60} minutes\n{time%60} seconds")
+        await message.edit(content=f":tomato: Pomodoro countdown: {time} seconds")
         
         # await interaction.response.send_message(embed=clock_embed_make(time))
     # await interaction.response.send_message(embed=clock_embed_make(time))
-    await message.edit(content="Pomodoro countdown finished!")
+    await message.edit(content=":tomato: Pomodoro countdown finished!")
     await asyncio.sleep(1)
 
     break_time = 5
@@ -366,7 +368,7 @@ async def pomodoro(interaction: discord.Interaction, time: int, unit: str):
         break_time *= 60
     # await interaction.response.send_message(embed=clock_embed_make(break_time))
     
-    message = await message.edit(content=f"Break countdown: {break_time} seconds")
+    message = await message.edit(content=f":tomato: Break countdown: {break_time} seconds")
        
     message = await interaction.original_response()
     
@@ -375,24 +377,21 @@ async def pomodoro(interaction: discord.Interaction, time: int, unit: str):
         break_time -= 1
         if break_time > 60:
             
-            await message.edit(content=f"Break countdown: {break_time//60} minutes\n{break_time%60} seconds")
-        await message.edit(content=f"Break countdown: {break_time} seconds")
+            await message.edit(content=f":tomato: Break countdown: {break_time//60} minutes\n{break_time%60} seconds")
+        await message.edit(content=f":tomato: Break countdown: {break_time} seconds")
         
         # await interaction.response.send_message(embed=clock_embed_make(break_time))
     # await interaction.response.send_message(embed=clock_embed_make(break_time))
-    await message.edit(content="Break countdown finished!")
+    await message.edit(content=":tomato: Break countdown finished!")
     await asyncio.sleep(1)
 
     # pomodoro complete embed
     embed = discord.Embed(title="Alert",
-                      description="Pomodoro Complete!\n\nPoints have been added.",
-                      colour=0x00b0f4)
+                      description=":tomato: Pomodoro Complete!\n\nPoints have been added.",
+                      colour=RED)
     embed.set_author(name="KanBoy")
-    embed.set_thumbnail(url="https://kanboy-website.vercel.app/assets/kanban.png")
-    embed.set_footer(text="Pomodoro Timer",
-                    icon_url="https://kanboy-website.vercel.app/assets/kanban.png")
     
-    
+    add_points_to_leaderboard(interaction.user.id, total_time)
 
     await message.edit(embed=embed)
 
@@ -404,7 +403,7 @@ async def leave(ctx):
     if ctx.voice_client:
         # Disconnect from the voice channel
         await ctx.voice_client.disconnect()
-        await ctx.send("Left the voice channel.")
+        await ctx.send(":door: Left the voice channel.")
     else:
         await ctx.send("I'm not connected to a voice channel.")
  
@@ -422,7 +421,7 @@ async def kanboy(interaction: discord.Interaction, prompt: str):
     )
 
     response = completion.choices[0].message.content
-    await interaction.response.send_message(f":robot: :{response}")
+    await interaction.response.send_message(f":robot: {response}")
     
     
     
@@ -452,20 +451,21 @@ lb = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
 
 
 @bot.tree.command(name="leaderboard")
-async def leaderboard(ctx):
+async def leaderboard(interaction: discord.Interaction):
     embed = discord.Embed(title="LEADERBOARD", colour=FUCHSIA)
     for key in lb.keys():
-        embed.add_field(name=ctx.guild.get_member(int(key)).display_name,
+        embed.add_field(name=interaction.guild.get_member(int(key)).display_name,
                     value = lb[key],
                     inline=False)
-    await ctx.send(embed=embed)
+    await interaction.response.send_message(embed=embed)
     
-    
+
 def add_points_to_leaderboard(user, points):
-    lb[user] += points;
+    lb[str(user)] += points
+    write_score()
     
 def write_score():
-    out = json.dumps(streak, indent = 4)
+    out = json.dumps(lb, indent = 4)
     
     with open("score.json", "w") as f:
         f.write(out)
