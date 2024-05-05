@@ -41,7 +41,7 @@ streak = get_streak()
 
 def make_streak_board():
     streak_board = discord.Embed(colour=0x00b0f4)
-    streak_board.set_author(name="BALLSACK'S STREAKS")
+    streak_board.set_author(name="KEVIN'S STREAKS")
     streak_board.add_field(name="STUDY",
                     value = streak["study"],
                     inline=True)
@@ -142,17 +142,17 @@ async def ping(ctx):
 ### KANBAN COMMANDS
 # displays current board
 @bot.tree.command(name="kanban")
-async def kanban(interaction: discord.Interaction):
+async def kanban(interaction: discord.Interaction):       
     embed = discord.Embed(colour=BOARDS[curr_board][4])
     embed.set_author(name=BOARDS[curr_board][NAME])
     embed.add_field(name=":pushpin: TODO",
-                    value = "\n".join([f"{i}. {BOARDS[curr_board][TODO][i][0]}[{prio[BOARDS[curr_board][TODO][i][1]]}]" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
+                    value = "\n".join([f"{i}. {BOARDS[curr_board][TODO][i][0]} [{prio[BOARDS[curr_board][TODO][i][1]]}]" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
                     inline=True)
     embed.add_field(name=":person_running: DOING",
-                    value="\n".join([f"{i}. {BOARDS[curr_board][DOING][i][0]}[{prio[BOARDS[curr_board][DOING][i][1]]}]" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
+                    value="\n".join([f"{i}. {BOARDS[curr_board][DOING][i][0]} [{prio[BOARDS[curr_board][DOING][i][1]]}]" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
                     inline=True)
     embed.add_field(name=":white_check_mark: DONE",
-                    value = "\n".join([f"{i}. {BOARDS[curr_board][DONE][i][0]}[{prio[BOARDS[curr_board][DONE][i][1]]}]" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
+                    value = "\n".join([f"{i}. {BOARDS[curr_board][DONE][i][0]} [{prio[BOARDS[curr_board][DONE][i][1]]}]" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
                     inline=True)
     EMBEDS[curr_board] = embed
     await interaction.response.send_message(embed=EMBEDS[curr_board])
@@ -292,6 +292,21 @@ async def kanbanaddstreak(interaction: discord.Interaction, priority: str):
     await interaction.response.send_message(embed=make_streak_board())
 
 # CLOCK
+def clock_embed_make(time):
+    embed = discord.Embed(colour=0x00b0f4)
+    if (time <= 0):
+        embed.add_field(name="COUNTDOWN FINISHED", inline=True)
+    else:
+        if (time > 60):
+            embed.add_field(name="COUNTDOWN", value=f"{time//60} minutes\n{time%60} seconds", inline=True)
+        else:
+            embed.add_field(name="COUNTDOWN", value=f"{time} seconds", inline=True)
+    # embed=discord.Embed(title="COUNTDOWN", description="{placeholder}")
+    # embed.add_field(name="{PLACEHOLDER}", value="", inline=True)
+    
+    return embed
+    # await ctx.send(embed=embed)
+
 @bot.tree.command(name="kanbancountdown")
 @app_commands.choices(unit = [
     app_commands.Choice(name="minutes", value = "minutes"),
@@ -301,20 +316,23 @@ async def kanbancountdown(interaction: discord.Interaction, time: int, unit: str
     
     if unit == "minutes":
         time *= 60
+    await interaction.response.send_message(embed=clock_embed_make(time))
     
-    
-    message = await interaction.response.send_message(f"Countdown: {time} seconds")
-    
-    message = await interaction.original_response()
+    # message = await interaction.response.send_message(f"Countdown: {time} seconds")
+       
+    # message = await interaction.original_response()
     
     while time > 0:
         await asyncio.sleep(0.7) 
         time -= 1
-        if time > 60:
-            await message.edit(content=f"Countdown: {time//60} minutes\n{time%60} seconds")
-        await message.edit(content=f"Countdown: {time} seconds")
+        # if time > 60:
+            
+        #     await message.edit(content=f"Countdown: {time//60} minutes\n{time%60} seconds")
+        # await message.edit(content=f"Countdown: {time} seconds")
         
-    await message.edit(content="Countdown finished!")
+        await interaction.response.send_message(embed=clock_embed_make(time))
+    await interaction.response.send_message(embed=clock_embed_make(time))
+    # await message.edit(content="Countdown finished!")
     
     
 
