@@ -104,18 +104,18 @@ async def ping(ctx):
 ### KANBAN COMMANDS
 # displays current board
 @bot.tree.command(name="kanban")
-async def kanban(interaction: discord.Interaction):       
-    embed = discord.Embed(title=":scroll: "+BOARDS[curr_board][NAME], colour=BOARDS[curr_board][COLOUR])
-    embed = discord.Embed(colour=BOARDS[curr_board][4]) 
-    embed.set_author(name=BOARDS[curr_board][NAME])
-    embed.add_field(name=":pushpin: TODO",
-                    value = "\n".join([f"{i}. {BOARDS[curr_board][TODO][i][0]} [{prio[BOARDS[curr_board][TODO][i][1]]}]" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
+async def kanban(interaction: discord.Interaction):
+    PRIO_MAPPING = {"HIGH": ":red_square: ", "MEDIUM": ":yellow_square: ", "LOW": ":green_square: "}
+
+    embed = discord.Embed(title=f":scroll: {BOARDS[curr_board][NAME]}", colour=BOARDS[curr_board][COLOUR])
+    embed.add_field(name=":pushpin: __TODO__",
+                    value = "\n".join([f"{PRIO_MAPPING[prio[BOARDS[curr_board][TODO][i][1]]]} {i}. {BOARDS[curr_board][TODO][i][0]}" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
                     inline=True)
-    embed.add_field(name=":person_running: DOING",
-                    value="\n".join([f"{i}. {BOARDS[curr_board][DOING][i][0]} [{prio[BOARDS[curr_board][DOING][i][1]]}]" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
+    embed.add_field(name=":person_running: __DOING__",
+                    value="\n".join([f"{PRIO_MAPPING[prio[BOARDS[curr_board][DOING][i][1]]]} {i}. {BOARDS[curr_board][DOING][i][0]}" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
                     inline=True)
-    embed.add_field(name=":white_check_mark: DONE",
-                    value = "\n".join([f"{i}. {BOARDS[curr_board][DONE][i][0]} [{prio[BOARDS[curr_board][DONE][i][1]]}]" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
+    embed.add_field(name=":white_check_mark: __DONE__",
+                    value = "\n".join([f"{PRIO_MAPPING[prio[BOARDS[curr_board][DONE][i][1]]]} {i}. {BOARDS[curr_board][DONE][i][0]}" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
                     inline=True)
     EMBEDS[curr_board] = embed
     await interaction.response.send_message(embed=EMBEDS[curr_board])
@@ -241,79 +241,61 @@ def get_streak():
 
 def write_streak():
     # js = {task: num+1}
-    out = json.dumps(streak, indent = 4)
+    out = json.dumps(streaks, indent = 4)
     
     with open("streak.json", "w") as f:
         f.write(out)
         
 def add_streak(task):
-    streak[task] += 1 
+    streaks[task] += 1 
     write_streak()
 
-streak = get_streak()
+streaks = get_streak()
 
 def make_streak_board():
     streak_board = discord.Embed(colour=0x00b0f4)
-    streak_board.set_author(name="KEVIN'S STREAKS")
-    for key in streak.keys():
+    streak_board.set_author(name="STREAKS")
+    for key in streaks.keys():
         streak_board.add_field(name=key.upper(),
-                    value = streak[key],
+                    value = streaks[key],
                     inline=False)
     streak_board.set_thumbnail(url="https://cdn.discordapp.com/attachments/1236334285636505693/1236423368463618088/IMG_4296.jpg?ex=6637f47e&is=6636a2fe&hm=c40a7f52b3f3adb0ab7a9aaf7a37748aeaa2cf1b294f91c75d00fe0b748b9fe0&")
-    streak_board.set_footer(text="THIS IS THE FOOTER")
-                    # icon_url="https://slate.dan.onl/slate.png")
     
     return streak_board
 ### STREAK COMMANDS
-@bot.tree.command(name="kanbangetstreaks")
-async def kanbanstreaks(interaction: discord.Interaction):
+@bot.tree.command(name="getstreaks")
+async def getstreaks(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=make_streak_board())
         
-    # streak = get_streak()
-    # await interaction.response.send_message(f"Streak: {streak}")
-
-
-streak_options = [
-    # app_commands.Choice(name="study", value = "study"),
-    # app_commands.Choice(name="workout", value = "workout"),
-    # app_commands.Choice(name="practice", value = "practice"),    
-    # app_commands.Choice(name="meditate", value = "meditate")
-    # "study",
-    # "workout",
-    # "practice",
-    # "meditate"
-    key for key in streak.keys()   
-]
-
 
 ## increments a streak of choice
-@bot.tree.command(name="kanbanstreak")
+@bot.tree.command(name="streak")
 # @app_commands.describe(task = "what u wnat?!/1!?")
-@app_commands.choices(options = [app_commands.Choice(name=choice, value = choice) for choice in [key for key in streak.keys()]])
-async def kanbanstreak(interaction: discord.Interaction, options: str):
+@app_commands.choices(options = [app_commands.Choice(name=choice, value = choice) for choice in [key for key in streaks.keys()]])
+async def streak(interaction: discord.Interaction, options: str):
     add_streak(options)
     # await interaction.response.send_message(f"Streak: {streak}")
     await interaction.response.send_message(embed=make_streak_board())
 
-@bot.tree.command(name="kanbanaddnewstreak")
-async def kanbanaddnewstreak(interaction: discord.Interaction, task: str):
-    streak[task] = 0
+@bot.tree.command(name="addnewstreak")
+async def addnewstreak(interaction: discord.Interaction, task: str):
+    streaks[task] = 0
     write_streak()
     await interaction.response.send_message(embed=make_streak_board())
 
-@bot.tree.command(name="kanbanremovestreak")
-@app_commands.choices(options = [app_commands.Choice(name=choice, value = choice) for choice in [key for key in streak.keys()]])
-async def kanbanremovestreak(interaction: discord.Interaction, options: str):
-    del streak[options]
+@bot.tree.command(name="removestreak")
+@app_commands.choices(options = [app_commands.Choice(name=choice, value = choice) for choice in [key for key in streaks.keys()]])
+async def removestreak(interaction: discord.Interaction, options: str):
+    del streaks[options]
     write_streak()
     await interaction.response.send_message(embed=make_streak_board())
 
 
-@bot.tree.command(name="kanbanclearstreak")
-@app_commands.choices(options = [app_commands.Choice(name=choice, value = choice) for choice in [key for key in streak.keys()]])
-async def kanbanclearstreak(interaction: discord.Interaction, options: str):
-    streak[options] = 0
+@bot.tree.command(name="clearstreak")
+@app_commands.choices(options = [app_commands.Choice(name=choice, value = choice) for choice in [key for key in streaks.keys()]])
+async def clearstreak(interaction: discord.Interaction, options: str):
+    streaks[options] = 0
     write_streak()
     await interaction.response.send_message(embed=make_streak_board())
     
@@ -417,7 +399,7 @@ lb = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
 
 
 
-@bot.command()
+@bot.tree.command(name="leaderboard")
 async def leaderboard(ctx):
     embed = discord.Embed(title="LEADERBOARD", colour=0x00b0f4)
     for key in lb.keys():
@@ -426,6 +408,15 @@ async def leaderboard(ctx):
                     inline=False)
     await ctx.send(embed=embed)
     
+    
+def add_points_to_leaderboard(user, points):
+    lb[user] += points;
+    
+def write_score():
+    out = json.dumps(streak, indent = 4)
+    
+    with open("score.json", "w") as f:
+        f.write(out)
 
 
 bot.run(TOKEN)
