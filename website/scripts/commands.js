@@ -12,11 +12,31 @@ var streaking_tab = document.getElementById("streaking-tab");
 var tabs_list = [all_tab, kanban_tab, pomodoro_tab, streaking_tab];
 
 var command_description = {
-
+    "kanban": "Open the kanban board",
+    "kanbanadd": "Add a task to the kanban board",
+    "kanbanmove": "Move a task in the kanban board",
+    "kanbanclear": "Clear the kanban board",
+    "kanbanlistboards": "List all kanban boards",
+    "kanbanrenameboard": "Rename a kanban board",
+    "kanbanaddboard": "Add a new kanban board",
+    "kanbanswitchboard": "Switch to a different kanban board",
+    "pomodoro": "Start a pomodoro timer",
+    "kanbangetstreak": "Get the current streak",
+    "kanbanaddstreak": "Add to the current streak"
 }
 
 var command_example = {
-    
+    "kanban": "kanban",
+    "kanbanadd": "kanbanadd <task>",
+    "kanbanmove": "kanbanmove <task> <column>",
+    "kanbanclear": "kanbanclear",
+    "kanbanlistboards": "kanbanlistboards",
+    "kanbanrenameboard": "kanbanrenameboard <old> <new>",
+    "kanbanaddboard": "kanbanaddboard <name>",
+    "kanbanswitchboard": "kanbanswitchboard <name>",
+    "pomodoro": "pomodoro",
+    "kanbangetstreak": "kanbangetstreak",
+    "kanbanaddstreak": "kanbanaddstreak"
 }
 
 function loadAllCommands() {
@@ -102,7 +122,12 @@ function createCommandModal(command) {
             <button class="delete" aria-label="close"></button>
             </header>
             <section class="modal-card-body">
-                ${command}
+                <div class="content">
+                    <h2>Description</h2>
+                    <p>${command_description[command]}</p>
+                    <h2>Example</h2>
+                    <p>${command_example[command]}</p>
+                </div>
             </section>
         </div>
         </div>

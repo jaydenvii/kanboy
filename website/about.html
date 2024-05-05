@@ -1,31 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="scripts/modal.js"></script>
-    <title>KanBot</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="scripts/modal.js"></script>
+  <title>KanBot</title>
 </head>
 <body class="has-navbar-fixed-top">
+  <div id="nav-placeholder" class="mb-5"></div>
+  <script>
+    $(function(){
+      $("#nav-placeholder").load("components/nav.html");
+    });
+  </script>
 
-    <div id="nav-placeholder" class="mb-5"></div>
-    <script>
-      $(function(){
-        $("#nav-placeholder").load("components/nav.html");
-      });
-    </script>
+  <section class="section mx-auto">
+    <div class="is-flex is-flex-direction-column mx-auto" style="max-width: 800px">
+      <p class="title is-size-1 has-text-centered">The only Discord studying bot you need.</p>
+      <p class="has-text-centered is-size-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores aperiam enim similique aspernatur esse fugit adipisci, architecto voluptatem ipsum blanditiis odio? Enim error nobis eligendi doloribus obcaecati ab impedit necessitatibus!</p>
+    </div>
+    <div class="fixed-grid has-3-cols mx-auto has-text-centered mt-6" style="max-width: 1200px">
+      <div class="grid">
+        <div class="cell is-col-span-3 title is-size-2">Features</div>
 
-    <section class="section">
-        <div class="is-flex is-flex-direction-column">
-            <p class="title is-size-1 has-text-centered">About KanBot</p>
-            <p class="has-text-centered is-size-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores aperiam enim similique aspernatur esse fugit adipisci, architecto voluptatem ipsum blanditiis odio? Enim error nobis eligendi doloribus obcaecati ab impedit necessitatibus!</p>
+        <div class="cell">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img
+                  src="https://bulma.io/assets/images/placeholders/1280x960.png"
+                  alt="Placeholder image"
+                />
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img
+                      src="https://bulma.io/assets/images/placeholders/96x96.png"
+                      alt="Placeholder image"
+                    />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-3">Kanban Board</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
+                iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
+                <a href="#">#responsive</a>
+                <br />
+                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
+        <div class="cell">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img
+                  src="https://bulma.io/assets/images/placeholders/1280x960.png"
+                  alt="Placeholder image"
+                />
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img
+                      src="https://bulma.io/assets/images/placeholders/96x96.png"
+                      alt="Placeholder image"
+                    />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-3">Pomodoro Timer</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
+                iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
+                <a href="#">#responsive</a>
+                <br />
+                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img
+                  src="https://bulma.io/assets/images/placeholders/1280x960.png"
+                  alt="Placeholder image"
+                />
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img
+                      src="https://bulma.io/assets/images/placeholders/96x96.png"
+                      alt="Placeholder image"
+                    />
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-3">Streaking</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
+                iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
+                <a href="#">#responsive</a>
+                <br />
+                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div id="footer-placeholder"></div>
+  <div id="footer-placeholder"></div>
 	<script>
 		$(function(){
 			$("#footer-placeholder").load("components/footer.html");
