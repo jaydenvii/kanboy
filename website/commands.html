@@ -12,7 +12,7 @@
 </head>
 <body class="has-navbar-fixed-top">
 
-  <div id="nav-placeholder" class="mb-5"></div>
+  <div id="nav-placeholder" style="margin-bottom: 5rem;"></div>
   <script>
     $(function(){
       $("#nav-placeholder").load("components/nav.html");
@@ -21,18 +21,18 @@
 
   <div id="commands-panel" class="mx-auto mt-5">
     <nav class="panel m-5">
-      <p class="panel-heading">Commands</p>
-      <div class="panel-block">
+      <p class="panel-heading" style="background-color: maroon;">Commands</p>
+      <!-- <div class="panel-block">
       <p class="control has-icons-left">
         <input class="input" type="text" placeholder="Search" />
         <span class="icon is-left">
         <i class="fas fa-search" aria-hidden="true"></i>
         </span>
       </p>
-      </div>
-      <p class="panel-tabs">
+      </div> -->
+      <p class="panel-tabs pt-2">
         <a onclick="loadAllCommands()" class="is-active" id="all-tab">All</a>
-        <a onclick="loadKanbanCommands()" id="kanban-tab">Kanban Board</a>
+        <a onclick="loadKanbanCommands()" class="is-not-active" id="kanban-tab">Kanban Board</a>
         <a onclick="loadPomodoroCommands()" id="pomodoro-tab">Pomadoro Timer</a>
         <a onclick="loadStreakingCommands()" id="streaking-tab">Streaking</a>
       </p>
