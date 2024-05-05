@@ -145,13 +145,13 @@ async def ping(ctx):
 async def kanban(interaction: discord.Interaction):
     embed = discord.Embed(colour=BOARDS[curr_board][4])
     embed.set_author(name=BOARDS[curr_board][NAME])
-    embed.add_field(name="TODO",
+    embed.add_field(name=":pushpin: TODO",
                     value = "\n".join([f"{i}. {BOARDS[curr_board][TODO][i][0]}" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
                     inline=True)
-    embed.add_field(name="DOING",
+    embed.add_field(name=":person_running: DOING",
                     value="\n".join([f"{i}. {BOARDS[curr_board][DOING][i][0]}" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
                     inline=True)
-    embed.add_field(name="DONE",
+    embed.add_field(name=":white_check_mark: DONE",
                     value = "\n".join([f"{i}. {BOARDS[curr_board][DONE][i][0]}" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
                     inline=True)
     EMBEDS[curr_board] = embed
