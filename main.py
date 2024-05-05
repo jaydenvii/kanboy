@@ -10,7 +10,7 @@ import asyncio
 # TODO
 # - /currentboard
 # - priority indicators
-# - 
+# - add user custom streaks
 
 
 from openai import OpenAI
