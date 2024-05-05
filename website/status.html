@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
   <link rel="stylesheet" href="style.css">
-	<title>KanBot</title>
+  <script src="scripts/navbar-burger.js"></script>
+  <title>KanBot</title>
 </head>
 <body class="has-navbar-fixed-top">
-	<div id="nav-placeholder">
+  <div id="nav-placeholder">
 
-	</div>
-	
-	<script>
-		$(function(){
-			$("#nav-placeholder").load("components/nav.html");
-		});
-	</script>
+  </div>
+  
+  <script>
+    $(function(){
+      $("#nav-placeholder").load("components/nav.html");
+    });
+  </script>
 
 <section class="hero is-success is-fullheight-with-navbar"> <!-- change the is-success with js if the bot is down -->
-	<div class="hero-body">
-		<div class="">
+  <div class="hero-body">
+    <div class="">
       <p class="title is-size-1">Status</p>
       <p class="subtitle is-size-3">KanBoy is operational</p>
     </div>
-	</div>
-	</section>
+  </div>
+  </section>
 
-	<div id="footer-placeholder">
+  <div id="footer-placeholder">
 
-	</div>
+  </div>
 
-	<script>
-		$(function(){
-			$("#footer-placeholder").load("components/footer.html");
-		});
-	</script>
+  <script>
+    $(function(){
+      $("#footer-placeholder").load("components/footer.html");
+    });
+  </script>
 
 </body>
 </html>
