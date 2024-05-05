@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
   <link rel="stylesheet" href="style.css">
   <script src="scripts/modal.js"></script>
+  <script src="scripts/navbar-burger.js"></script>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
+  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
   <title>KanBot</title>
 </head>
 <body class="has-navbar-fixed-top">
@@ -19,8 +29,11 @@
 
   <section class="section mx-auto">
     <div class="is-flex is-flex-direction-column mx-auto" style="max-width: 800px">
-      <p class="title is-size-1 has-text-centered">The only Discord studying bot you need.</p>
-      <p class="has-text-centered is-size-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores aperiam enim similique aspernatur esse fugit adipisci, architecto voluptatem ipsum blanditiis odio? Enim error nobis eligendi doloribus obcaecati ab impedit necessitatibus!</p>
+      <p class="title is-size-1 has-text-centered">The only studying Discord bot you need.</p>
+      <p class="has-text-centered is-size-5">
+        A fully customizable bot for your Discord server that helps you study and stay productive.
+        Our bot is designed to help you stay focused and organized while studying.
+      </p>
     </div>
     <div class="fixed-grid has-3-cols mx-auto has-text-centered mt-6" style="max-width: 1200px">
       <div class="grid is-column-gap-3">
@@ -31,32 +44,20 @@
             <div class="card-image">
               <figure class="image is-4by3">
                 <img
-                  src="https://bulma.io/assets/images/placeholders/1280x960.png"
-                  alt="Placeholder image"
+                  src="assets/kanban_thumbnail.svg"
+                  alt="Kanban Board Thumbnail"
                 />
               </figure>
             </div>
             <div class="card-content">
               <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img
-                      src="https://bulma.io/assets/images/placeholders/96x96.png"
-                      alt="Placeholder image"
-                    />
-                  </figure>
-                </div>
                 <div class="media-content">
                   <p class="title is-3">Kanban Board</p>
                 </div>
               </div>
           
-              <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-                iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
-                <a href="#">#responsive</a>
-                <br />
-                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              <div class="content"> <!-- Kanban Board description -->
+                A kanban board is a tool used to visualize and manage work, and optimize the flow of work. It is widely used in software development and other fields to manage projects and tasks.
               </div>
             </div>
           </div>
@@ -66,32 +67,20 @@
             <div class="card-image">
               <figure class="image is-4by3">
                 <img
-                  src="https://bulma.io/assets/images/placeholders/1280x960.png"
-                  alt="Placeholder image"
+                  src="assets/pomodoro_thumbnail.svg"
+                  alt="Pomadoro Timer Thumbnail"
                 />
               </figure>
             </div>
             <div class="card-content">
               <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img
-                      src="https://bulma.io/assets/images/placeholders/96x96.png"
-                      alt="Placeholder image"
-                    />
-                  </figure>
-                </div>
                 <div class="media-content">
                   <p class="title is-3">Pomodoro Timer</p>
                 </div>
               </div>
           
-              <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-                iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
-                <a href="#">#responsive</a>
-                <br />
-                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              <div class="content"> <!-- Pomodoro Timer description -->
+                The Pomodoro Technique is a time management method that uses a timer to break work into intervals, traditionally 25 minutes in length, separated by short breaks.
               </div>
             </div>
           </div>
@@ -101,32 +90,20 @@
             <div class="card-image">
               <figure class="image is-4by3">
                 <img
-                  src="https://bulma.io/assets/images/placeholders/1280x960.png"
-                  alt="Placeholder image"
+                  src="assets/streaks_thumbnail.svg"
+                  alt="Streaking Thumbnail"
                 />
               </figure>
             </div>
             <div class="card-content">
               <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <img
-                      src="https://bulma.io/assets/images/placeholders/96x96.png"
-                      alt="Placeholder image"
-                    />
-                  </figure>
-                </div>
                 <div class="media-content">
                   <p class="title is-3">Streaking</p>
                 </div>
               </div>
           
-              <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-                iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
-                <a href="#">#responsive</a>
-                <br />
-                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              <div class="content"> <!-- Streaking description -->
+                Streaking is a motivational technique where you perform a task daily, and keep track of the number of days you have consecutively performed the task.
               </div>
             </div>
           </div>

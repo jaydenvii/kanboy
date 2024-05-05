@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="style.css">
-    <title>KanBot</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="scripts/navbar-burger.js" defer="true"></script>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
+  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <title>KanBot</title>
 </head>
 <body class="has-navbar-fixed-top">
 
   <div id="nav-placeholder">
-
+    
   </div>
 
   <script>
@@ -22,11 +32,14 @@
 
   <section class="hero is-fullheight-with-navbar" id="home-hero">
     <div class="hero-body">
-      <div class="columns">
+      <div class="columns is-centered mx-auto">
         <div class="column my-auto">
-          <p class="title my-3">KanBoy: The only Discord studying bot you need.</p>
-          <p class="subtitle">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum reiciendis amet tempora distinctio sapiente repellat possimus laboriosam corporis, at labore dolores eum aperiam aliquam velit, doloremque consequuntur hic, maxime ut.</p>
-          <div class="buttons are-large">
+          <p class="title my-3">KanBoy: The only studying Discord bot you need.</p>
+          <p class="subtitle">
+            A fully customizable bot for your Discord server that helps you study and stay productive.
+            Our bot is designed to help you stay focused and organized while studying.
+          </p>
+          <div class="buttons are-medium">
             <a href="https://discord.com/oauth2/authorize?client_id=1236333640024326285&permissions=2147551296&scope=bot" target="_blank">
               <button class="button is-light is-rounded ">Invite KanBoy</button>
             </a>
