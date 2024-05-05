@@ -142,13 +142,13 @@ async def ping(ctx):
 async def kanban(interaction: discord.Interaction):
     embed = discord.Embed(colour=BOARDS[curr_board][4])
     embed.set_author(name=BOARDS[curr_board][NAME])
-    embed.add_field(name=":pushpin: TODO",
+    embed.add_field(name=":pushpin: TODO                            |",
                     value = "\n".join([f"{i}. {BOARDS[curr_board][TODO][i][0]}" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
                     inline=True)
-    embed.add_field(name=":person_running: DOING",
+    embed.add_field(name=":person_running: DOING                           |",
                     value="\n".join([f"{i}. {BOARDS[curr_board][DOING][i][0]}" for i in range(1, len(BOARDS[curr_board][DOING]) + 1)]),
                     inline=True)
-    embed.add_field(name=":white_check_mark: DONE",
+    embed.add_field(name=":white_check_mark: DONE                            |",
                     value = "\n".join([f"{i}. {BOARDS[curr_board][DONE][i][0]}" for i in range(1, len(BOARDS[curr_board][DONE]) + 1)]),
                     inline=True)
     EMBEDS[curr_board] = embed
@@ -165,7 +165,7 @@ async def kanban(interaction: discord.Interaction):
 async def kanbanadd(interaction: discord.Interaction, task: str, priority: app_commands.Choice[int]):
     BOARDS[curr_board][TODO][len(BOARDS[curr_board][TODO])+1] = [task, HIGH]
     print(BOARDS[curr_board][TODO])
-    await interaction.response.send_message(f"Added **{task}** with **{priority.name}** priority.")
+    await interaction.response.send_message(f":pencil: Added **{task}** with **{priority.name}** priority.")
 
 # moves task on current board
 @bot.tree.command(name="kanbanmove")
@@ -184,13 +184,13 @@ async def kanbanmove(interaction: discord.Interaction, move_from: app_commands.C
     BOARDS[curr_board][move_to.value][len(BOARDS[curr_board][move_to.value])+1] = BOARDS[curr_board][move_from.value][task_number]
     del BOARDS[curr_board][move_from.value][task_number]
     BOARDS[curr_board][move_from.value] = reset(BOARDS[curr_board][move_from.value])
-    await interaction.response.send_message(f"Moved **{move_from.name}**, task **{task_number}** to **{move_to.name}**")
+    await interaction.response.send_message(f":arrow_right: Moved **{move_from.name}**, task **{task_number}** to **{move_to.name}**")
 
 # clears "DONE" on current board
 @bot.tree.command(name="kanbanclear")
 async def kanbanclear(interaction: discord.Interaction):
     BOARDS[curr_board][DONE] = {}
-    await interaction.response.send_message(f"Cleared DONE list from {BOARDS[curr_board][0]}.")
+    await interaction.response.send_message(f":broom: Cleared DONE list from {BOARDS[curr_board][0]}.")
 
 @bot.tree.command(name="kanbanremove")
 @app_commands.choices(remove_from=[
@@ -203,7 +203,7 @@ async def kanbanremove(interaction: discord.Interaction, remove_from: app_comman
     name = BOARDS[curr_board][remove_from.value][task_number][0]
     del BOARDS[curr_board][remove_from.value][task_number]
     BOARDS[curr_board][remove_from.value] = reset(BOARDS[curr_board][remove_from.value])   
-    await interaction.response.send_message(f"Removed {name} from {BOARDS[curr_board][0]}.")
+    await interaction.response.send_message(f":wastebasket: Removed {name} from {BOARDS[curr_board][0]}.")
 
 # lists all boards
 @bot.tree.command(name="kanbanlistboards")
@@ -220,9 +220,9 @@ async def kanbanlistboard(interaction: discord.Interaction):
 @app_commands.describe(new_name = "New name for board?")
 @app_commands.describe(board_number = "Board number? Run /kanbanlistboard for board numbers.")
 @bot.tree.command(name="kanbanrenameboard")
-async def kanbanrenameboard(interaction: discord.Interaction, new_name: str, board_number: int):
+async def kanbanrenameboard(interaction: discord.Interaction, board_number: int, new_name: str):
     BOARDS[board_number][0] = new_name
-    await interaction.response.send_message(f"Renamed kanban board #{board_number} titled {new_name}.")
+    await interaction.response.send_message(f":pencil: Renamed kanban board #{board_number} titled {new_name}.")
 
 # recolours board
 @app_commands.describe(board_number = "Board number? Run /kanbanlistboard for board numbers.")
@@ -239,7 +239,7 @@ async def kanbanrenameboard(interaction: discord.Interaction, new_name: str, boa
 @bot.tree.command(name="kanbanrecolourboard")
 async def kanbanrecolourboard(interaction: discord.Interaction, board_number: int, colour: app_commands.Choice[int]):
     BOARDS[board_number][4] = colour.value
-    await interaction.response.send_message(f"Recoloured kanban board #{board_number} coloured {colour.name}.")
+    await interaction.response.send_message(f":art: Recoloured kanban board #{board_number} coloured {colour.name}.")
 
 # adds new board
 @app_commands.describe(name = "Name of new board?")
@@ -257,14 +257,14 @@ async def kanbanrecolourboard(interaction: discord.Interaction, board_number: in
 @bot.tree.command(name="kanbanaddboard")
 async def kanbanaddboard(interaction: discord.Interaction, name: str, colour: app_commands.Choice[int]):
     BOARDS.append([name, {}, {}, {}, colour.value])
-    await interaction.response.send_message(f"Added new kanban board titled {name}.")
+    await interaction.response.send_message(f":pencil: Added new kanban board titled {name}.")
 
 # switches board
 @app_commands.describe(number = "Number of board to switch to?")
 @bot.tree.command(name="kanbanswitchboard")
 async def kanbanswitchboard(interaction: discord.Interaction, number: int):
     set_curr_board(number)
-    await interaction.response.send_message(f"Moved to board #**{number}**, titled **{BOARDS[curr_board][0]}**")
+    await interaction.response.send_message(f":arrow_right_hook: Moved to board #**{number}**, titled **{BOARDS[curr_board][0]}**")
 
 @bot.tree.command(name="kanbangetstreak")
 async def kanbanstreak(interaction: discord.Interaction):
@@ -335,6 +335,6 @@ async def kanboy(interaction: discord.Interaction, prompt: str):
     )
 
     response = completion.choices[0].message.content
-    await interaction.response.send_message(response)
+    await interaction.response.send_message(f":robot: :{response}")
 
 bot.run(TOKEN)
