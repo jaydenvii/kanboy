@@ -43,6 +43,7 @@ FUCHSIA = 0xff00ff
 AQUA = 0x00ffff
 WHITE = 0xffffff
 BLACK = 0x000000
+ORANGE = 0xFF8C00
 
 # helper for listing tasks
 def reset(dict):
@@ -78,7 +79,7 @@ def set_curr_board(num):
     global curr_board
     curr_board = num
 
-curr_board = 0
+curr_board = 1
 
 HIGH = 1
 MEDIUM = 2
@@ -89,8 +90,9 @@ TODO = 1
 DOING = 2
 DONE = 3
 COLOUR = 4
+THUMBNAIL = 5
 
-BOARDS = [["UNTITLED BOARD", {}, {}, {}, 0x00ff00]]
+BOARDS = [[], ["UNTITLED BOARD", {}, {}, {}, BLUE, "https://cdn.discordapp.com/avatars/458004758796697621/2240e45905dff5ca72290c0f2beb4a8d.png?size=1024"]]
 
 EMBEDS = [None for i in range(1024)]
 
@@ -108,6 +110,8 @@ async def kanban(interaction: discord.Interaction):
     PRIO_MAPPING = {"HIGH": ":red_square: ", "MEDIUM": ":yellow_square: ", "LOW": ":green_square: "}
 
     embed = discord.Embed(title=f":scroll: {BOARDS[curr_board][NAME]}", colour=BOARDS[curr_board][COLOUR])
+    embed.set_thumbnail(url=BOARDS[curr_board][THUMBNAIL])
+    
     embed.add_field(name=":pushpin: __TODO__",
                     value = "\n".join([f"{PRIO_MAPPING[prio[BOARDS[curr_board][TODO][i][1]]]} {i}. {BOARDS[curr_board][TODO][i][0]}" for i in range(1, len(BOARDS[curr_board][TODO]) + 1)]),
                     inline=True)
@@ -174,8 +178,8 @@ async def kanbanremove(interaction: discord.Interaction, remove_from: app_comman
 # lists all boards
 @bot.tree.command(name="kanbanlistboards")
 async def kanbanlistboard(interaction: discord.Interaction):
-    embed = discord.Embed(title=":scroll: LIST OF BOARDS", colour=0x00b0f4)
-    for i in range(len(BOARDS)):
+    embed = discord.Embed(title=":scroll: LIST OF BOARDS", colour=0xD2691E)
+    for i in range(1, len(BOARDS)):
         embed.add_field(name=BOARDS[i][0],
                     value="Board Number/ID: " + str(i),
                     inline=False)
@@ -198,6 +202,7 @@ async def kanbanrenameboard(interaction: discord.Interaction, board_number: int,
     app_commands.Choice(name="YELLOW", value = 0xffff00),
     app_commands.Choice(name="FUCHSIA", value = 0xff00ff),
     app_commands.Choice(name="AQUA", value = 0x00ffff),
+    app_commands.Choice(name="ORANGE", value = 0xff8c00),
     app_commands.Choice(name="WHITE", value = 0xffffff),
     app_commands.Choice(name="BLACK", value = 0x000000)
 ])
@@ -214,6 +219,7 @@ async def kanbanrecolourboard(interaction: discord.Interaction, board_number: in
     app_commands.Choice(name="GREEN", value = 0x00ff00),
     app_commands.Choice(name="BLUE", value = 0x0000ff),  
     app_commands.Choice(name="YELLOW", value = 0xffff00),
+    app_commands.Choice(name="ORANGE", value = 0xff8c00),
     app_commands.Choice(name="FUCHSIA", value = 0xff00ff),
     app_commands.Choice(name="AQUA", value = 0x00ffff),
     app_commands.Choice(name="WHITE", value = 0xffffff),
@@ -221,7 +227,10 @@ async def kanbanrecolourboard(interaction: discord.Interaction, board_number: in
 ])
 @bot.tree.command(name="kanbanaddboard")
 async def kanbanaddboard(interaction: discord.Interaction, name: str, colour: app_commands.Choice[int]):
-    BOARDS.append([name, {}, {}, {}, colour.value])
+    user_id = interaction.user.id
+    user_avatar = interaction.user.avatar
+    BOARDS.append([name, {}, {}, {}, colour.value, user_avatar])
+    print(interaction.user.id, interaction.user.avatar)
     await interaction.response.send_message(f":pencil: Added new kanban board titled {name}.")
 
 # switches board
@@ -253,13 +262,13 @@ def add_streak(task):
 streaks = get_streak()
 
 def make_streak_board():
-    streak_board = discord.Embed(colour=0x00b0f4)
+    streak_board = discord.Embed(colour=ORANGE)
     streak_board.set_author(name="STREAKS")
-    for key in streaks.keys():
+    for key in streak.keys():
         streak_board.add_field(name=key.upper(),
                     value = streaks[key],
                     inline=False)
-    streak_board.set_thumbnail(url="https://cdn.discordapp.com/attachments/1236334285636505693/1236423368463618088/IMG_4296.jpg?ex=6637f47e&is=6636a2fe&hm=c40a7f52b3f3adb0ab7a9aaf7a37748aeaa2cf1b294f91c75d00fe0b748b9fe0&")
+    # streak_board.set_thumbnail(url="https://cdn.discordapp.com/attachments/1236334285636505693/1236423368463618088/IMG_4296.jpg?ex=6637f47e&is=6636a2fe&hm=c40a7f52b3f3adb0ab7a9aaf7a37748aeaa2cf1b294f91c75d00fe0b748b9fe0&")
     
     return streak_board
 ### STREAK COMMANDS
@@ -304,7 +313,7 @@ async def clearstreak(interaction: discord.Interaction, options: str):
     
 ### POMODORO COMMANDS
 def clock_embed_make(time):
-    embed = discord.Embed(colour=0x00b0f4)
+    embed = discord.Embed(colour=RED)
     if (time <= 0):
         embed.add_field(name="COUNTDOWN FINISHED", inline=True)
     else:
@@ -401,7 +410,7 @@ lb = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
 
 @bot.tree.command(name="leaderboard")
 async def leaderboard(ctx):
-    embed = discord.Embed(title="LEADERBOARD", colour=0x00b0f4)
+    embed = discord.Embed(title="LEADERBOARD", colour=FUCHSIA)
     for key in lb.keys():
         embed.add_field(name=ctx.guild.get_member(int(key)).display_name,
                     value = lb[key],
