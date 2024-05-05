@@ -12,17 +12,39 @@ var streaking_tab = document.getElementById("streaking-tab");
 var tabs_list = [all_tab, kanban_tab, pomodoro_tab, streaking_tab];
 
 var command_description = {
-
+    "kanban": "Open the kanban board",
+    "kanbanadd": "Add a task to the kanban board",
+    "kanbanmove": "Move a task in the kanban board",
+    "kanbanclear": "Clear the kanban board",
+    "kanbanlistboards": "List all kanban boards",
+    "kanbanrenameboard": "Rename a kanban board",
+    "kanbanaddboard": "Add a new kanban board",
+    "kanbanswitchboard": "Switch to a different kanban board",
+    "pomodoro": "Start a pomodoro timer",
+    "kanbangetstreak": "Get the current streak",
+    "kanbanaddstreak": "Add to the current streak"
 }
 
 var command_example = {
-    
+    "kanban": "kanban",
+    "kanbanadd": "kanbanadd <task>",
+    "kanbanmove": "kanbanmove <task> <column>",
+    "kanbanclear": "kanbanclear",
+    "kanbanlistboards": "kanbanlistboards",
+    "kanbanrenameboard": "kanbanrenameboard <old> <new>",
+    "kanbanaddboard": "kanbanaddboard <name>",
+    "kanbanswitchboard": "kanbanswitchboard <name>",
+    "pomodoro": "pomodoro",
+    "kanbangetstreak": "kanbangetstreak",
+    "kanbanaddstreak": "kanbanaddstreak"
 }
 
 function loadAllCommands() {
     for (var i = 0; i < tabs_list.length; i++) {
         tabs_list[i].classList.remove("is-active");
+        tabs_list[i].classList.add("is-not-active");
     }
+    all_tab.classList.remove("is-not-active");
     all_tab.classList.add("is-active");
     var full_list = kanban_list.concat(pomodoro_list).concat(streaking_list);
     commands_div.innerHTML = "";
@@ -41,7 +63,9 @@ function loadAllCommands() {
 function loadKanbanCommands() {
     for (var i = 0; i < tabs_list.length; i++) {
         tabs_list[i].classList.remove("is-active");
+        tabs_list[i].classList.add("is-not-active");
     }
+    kanban_tab.classList.remove("is-not-active");
     kanban_tab.classList.add("is-active");
     commands_div.innerHTML = "";
     for (var i = 0; i < kanban_list.length; i++) {
@@ -59,7 +83,9 @@ function loadKanbanCommands() {
 function loadPomodoroCommands() {
     for (var i = 0; i < tabs_list.length; i++) {
         tabs_list[i].classList.remove("is-active");
+        tabs_list[i].classList.add("is-not-active");
     }
+    pomodoro_tab.classList.remove("is-not-active");
     pomodoro_tab.classList.add("is-active");
     commands_div.innerHTML = "";
     for (var i = 0; i < pomodoro_list.length; i++) {
@@ -77,7 +103,9 @@ function loadPomodoroCommands() {
 function loadStreakingCommands() {
     for (var i = 0; i < tabs_list.length; i++) {
         tabs_list[i].classList.remove("is-active");
+        tabs_list[i].classList.add("is-not-active");
     }
+    streaking_tab.classList.remove("is-not-active");
     streaking_tab.classList.add("is-active");
     commands_div.innerHTML = "";
     for (var i = 0; i < streaking_list.length; i++) {
@@ -102,7 +130,12 @@ function createCommandModal(command) {
             <button class="delete" aria-label="close"></button>
             </header>
             <section class="modal-card-body">
-                ${command}
+                <div class="content">
+                    <h2>Description</h2>
+                    <p>${command_description[command]}</p>
+                    <h2>Example</h2>
+                    <p>${command_example[command]}</p>
+                </div>
             </section>
         </div>
         </div>
