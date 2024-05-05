@@ -7,7 +7,10 @@ import json
 import datetime
 import asyncio
 
-
+# TODO
+# - /currentboard
+# - priority indicators
+# - 
 
 
 from openai import OpenAI
