@@ -6,6 +6,7 @@ import os
 import json
 import datetime
 import asyncio
+from discord.ui import Button, View
 
 # TODO
 # - /currentboard
@@ -104,7 +105,7 @@ async def ping(ctx):
 ### KANBAN COMMANDS
 # displays current board
 @bot.tree.command(name="kanban")
-async def kanban(interaction: discord.Interaction):       
+async def kanban(interaction: discord.Interaction):   
     embed = discord.Embed(title=":scroll: "+BOARDS[curr_board][NAME], colour=BOARDS[curr_board][COLOUR])
     embed = discord.Embed(colour=BOARDS[curr_board][4]) 
     embed.set_author(name=BOARDS[curr_board][NAME])
@@ -341,7 +342,10 @@ def clock_embed_make(time):
     app_commands.Choice(name="minutes", value = "minutes"),
     app_commands.Choice(name="seconds", value = "seconds")
 ])
-async def pomodoro(interaction: discord.Interaction, time: int, unit: str):
+
+async def pomodoro(interaction: discord.Interaction, unit: str):
+
+    time = 6
     
     channel = interaction.user.voice.channel
     await channel.connect()
@@ -350,29 +354,70 @@ async def pomodoro(interaction: discord.Interaction, time: int, unit: str):
         time *= 60
     # await interaction.response.send_message(embed=clock_embed_make(time))
     
-    message = await interaction.response.send_message(f"Countdown: {time} seconds")
+    message = await interaction.response.send_message(f"Pomodoro countdown: {time} seconds")
        
     message = await interaction.original_response()
     
     while time > 0:
-        await asyncio.sleep(0.7) 
+        await asyncio.sleep(0.9) 
         time -= 1
         if time > 60:
             
-            await message.edit(content=f"Countdown: {time//60} minutes\n{time%60} seconds")
-        await message.edit(content=f"Countdown: {time} seconds")
+            await message.edit(content=f"Pomodoro countdown: {time//60} minutes\n{time%60} seconds")
+        await message.edit(content=f"Pomodoro countdown: {time} seconds")
         
         # await interaction.response.send_message(embed=clock_embed_make(time))
     # await interaction.response.send_message(embed=clock_embed_make(time))
-    await message.edit(content="Countdown finished!")
+    await message.edit(content="Pomodoro countdown finished!")
+    await asyncio.sleep(1)
+
+    break_time = 5
+
+    if unit == "minutes":
+        break_time *= 60
+    # await interaction.response.send_message(embed=clock_embed_make(break_time))
+    
+    message = await message.edit(content=f"Break countdown: {break_time} seconds")
+       
+    message = await interaction.original_response()
+    
+    while break_time > 0:
+        await asyncio.sleep(0.9)  
+        break_time -= 1
+        if break_time > 60:
+            
+            await message.edit(content=f"Break countdown: {break_time//60} minutes\n{break_time%60} seconds")
+        await message.edit(content=f"Break countdown: {break_time} seconds")
+        
+        # await interaction.response.send_message(embed=clock_embed_make(break_time))
+    # await interaction.response.send_message(embed=clock_embed_make(break_time))
+    await message.edit(content="Break countdown finished!")
+    await asyncio.sleep(1)
+
+    # pomodoro complete embed
+    embed = discord.Embed(title="Alert",
+                      description="Pomodoro Complete!\n\nPoints have been added.",
+                      colour=0x00b0f4)
+    embed.set_author(name="KanBoy")
+    embed.set_thumbnail(url="https://kanboy-website.vercel.app/assets/kanban.png")
+    embed.set_footer(text="Pomodoro Timer",
+                    icon_url="https://kanboy-website.vercel.app/assets/kanban.png")
     
     
 
+    await message.edit(embed=embed)
 
 
-
-
-
+@bot.command()
+async def leave(ctx):
+    print(ctx)
+    # Check if the bot is connected to a voice channel in the guild
+    if ctx.voice_client:
+        # Disconnect from the voice channel
+        await ctx.voice_client.disconnect()
+        await ctx.send("Left the voice channel.")
+    else:
+        await ctx.send("I'm not connected to a voice channel.")
  
 ### KANBOY COMMANDS
 @bot.tree.command(name="kanboy")
