@@ -18,3 +18,7 @@ We learned the ins and outs of making a Discord bot with Python. We also learned
 
 ## What's next for KanBoy
 We would want to upgrade the Pomodoro feature to have the bot stream the clock and other data live. We would also be interested in making a scheduling tool that notifies everyone at the same time for a study session.
+
+## Take a look at our website!
+
+[KanBoy Website](https://kanboy.vercel.app/)
