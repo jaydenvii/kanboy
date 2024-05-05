@@ -129,7 +129,7 @@ async def kanban(interaction: discord.Interaction):
         app_commands.Choice(name="LOW", value=3)
     ])
 async def kanbanadd(interaction: discord.Interaction, task: str, priority: app_commands.Choice[int]):
-    BOARDS[curr_board][TODO][len(BOARDS[curr_board][TODO])+1] = [task, HIGH]
+    BOARDS[curr_board][TODO][len(BOARDS[curr_board][TODO])+1] = [task, priority.value]
     print(BOARDS[curr_board][TODO])
     await interaction.response.send_message(f":pencil: Added **{task}** with **{priority.name}** priority.")
 
@@ -389,5 +389,43 @@ async def kanboy(interaction: discord.Interaction, prompt: str):
 
     response = completion.choices[0].message.content
     await interaction.response.send_message(f":robot: :{response}")
+    
+    
+    
+    
+
+
+### LEADERBOARD
+def load_scores():
+    with open("score.json", "r") as f:
+        return json.load(f)
+@bot.command()
+async def get_id(ctx):
+    user_id = ctx.author.id
+    await ctx.send(user_id)
+
+@bot.command()
+async def get_points(ctx):
+    user_id = ctx.author.id
+    with open("score.json", "r") as f:
+        points = json.load(f)
+    await ctx.send(points[str(user_id)])
+
+scores = load_scores()
+
+lb = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
+
+
+
+@bot.command()
+async def leaderboard(ctx):
+    embed = discord.Embed(title="LEADERBOARD", colour=0x00b0f4)
+    for key in lb.keys():
+        embed.add_field(name=ctx.guild.get_member(int(key)).display_name,
+                    value = lb[key],
+                    inline=False)
+    await ctx.send(embed=embed)
+    
+
 
 bot.run(TOKEN)
