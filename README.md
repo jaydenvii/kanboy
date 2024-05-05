@@ -1,5 +1,3 @@
-# KanBoy
-
 ## Inspiration
 Our inspiration for KanBoy came from our own studying habits of doing group sessions on Discord. However, we often got distracted and unfocused while we were trying to be productive. We made KanBoy to solve this problem.
 
