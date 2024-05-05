@@ -14,3 +14,7 @@ html {
 #home-hero {
     background-color: #890404;
 }
+
+.is-not-active {
+    color: rgb(188, 19, 19);
+}

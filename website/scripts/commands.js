@@ -42,7 +42,9 @@ var command_example = {
 function loadAllCommands() {
     for (var i = 0; i < tabs_list.length; i++) {
         tabs_list[i].classList.remove("is-active");
+        tabs_list[i].classList.add("is-not-active");
     }
+    all_tab.classList.remove("is-not-active");
     all_tab.classList.add("is-active");
     var full_list = kanban_list.concat(pomodoro_list).concat(streaking_list);
     commands_div.innerHTML = "";
@@ -61,7 +63,9 @@ function loadAllCommands() {
 function loadKanbanCommands() {
     for (var i = 0; i < tabs_list.length; i++) {
         tabs_list[i].classList.remove("is-active");
+        tabs_list[i].classList.add("is-not-active");
     }
+    kanban_tab.classList.remove("is-not-active");
     kanban_tab.classList.add("is-active");
     commands_div.innerHTML = "";
     for (var i = 0; i < kanban_list.length; i++) {
@@ -79,7 +83,9 @@ function loadKanbanCommands() {
 function loadPomodoroCommands() {
     for (var i = 0; i < tabs_list.length; i++) {
         tabs_list[i].classList.remove("is-active");
+        tabs_list[i].classList.add("is-not-active");
     }
+    pomodoro_tab.classList.remove("is-not-active");
     pomodoro_tab.classList.add("is-active");
     commands_div.innerHTML = "";
     for (var i = 0; i < pomodoro_list.length; i++) {
@@ -97,7 +103,9 @@ function loadPomodoroCommands() {
 function loadStreakingCommands() {
     for (var i = 0; i < tabs_list.length; i++) {
         tabs_list[i].classList.remove("is-active");
+        tabs_list[i].classList.add("is-not-active");
     }
+    streaking_tab.classList.remove("is-not-active");
     streaking_tab.classList.add("is-active");
     commands_div.innerHTML = "";
     for (var i = 0; i < streaking_list.length; i++) {
